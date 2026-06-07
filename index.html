@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>담벼락 카페 - 커뮤니티 홈</title>
+    <style>
+        body { font-family: 'Malgun Gothic', sans-serif; line-height: 1.6; margin: 0; padding: 0; background-color: #fcfbf9; color: #333333; }
+        header { background-color: #4a3728; color: white; padding: 25px; text-align: center; }
+        nav { background-color: #3e2e22; }
+        nav ul { list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; }
+        nav a { color: white; text-decoration: none; padding: 15px 25px; display: block; font-weight: bold; }
+        nav a:hover { background-color: #d4a373; color: #333; }
+        main { max-width: 850px; margin: 30px auto; padding: 0 20px; }
+        
+        section { background: white; padding: 25px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 40px; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+        h2 { color: #4a3728; margin-top: 0; border-bottom: 2px solid #4a3728; padding-bottom: 10px; margin-bottom: 20px; }
+
+        /* 테이블 스타일 */
+        .board-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .board-table th, .board-table td { border: 1px solid #ddd; padding: 12px; text-align: center; vertical-align: middle; }
+        .board-table th { background-color: #f5f4f0; color: #4a3728; }
+        .board-table td.title { text-align: left; }
+        
+        /* 댓글창 스타일 */
+        .comment-area { background: #f9f9f7; padding: 10px; border-radius: 4px; margin-top: 8px; border: 1px solid #eef; }
+        .comment-list { list-style: none; padding: 0; margin: 0 0 8px 0; font-size: 0.9rem; text-align: left; }
+        .comment-item { padding: 4px 0; border-bottom: 1px dashed #eee; color: #555; }
+        .comment-item strong { color: #4a3728; }
+        .comment-form { display: flex; gap: 5px; margin-top: 5px; }
+        .comment-form input[type="text"] { flex: 1; padding: 6px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.85rem; }
+        .btn-comment-submit { background: #d4a373; color: #333; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
+
+        /* 일반 삭제 버튼 */
+        .btn-delete { background-color: #e63946; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
+        .btn-delete:hover { background-color: #c32f3a; }
+        
+        /* 회원관리 조치 버튼 스타일 */
+        .btn-admin-action { padding: 5px 8px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85rem; margin: 0 2px; }
+        .btn-ban { background-color: #f4a261; color: white; } /* 정지 */
+        .btn-unban { background-color: #2a9d8f; color: white; } /* [추가] 정지 해제 */
+        .btn-kick { background-color: #e63946; color: white; } /* 강퇴 */
+        .btn-leave { background-color: #6c757d; color: white; } /* 탈퇴 */
+
+        /* 글쓰기 폼 */
+        .simple-form { background: #fbfbfa; padding: 20px; border-radius: 6px; border: 1px dashed #4a3728; margin-top: 20px; }
+        .simple-form h3 { margin-top: 0; font-size: 1.1rem; color: #4a3728; margin-bottom: 15px; }
+        .form-group { margin-bottom: 15px; display: flex; flex-direction: column; gap: 5px; }
+        .form-group input[type="text"], .form-group textarea { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; width: 100%; box-sizing: border-box; }
+        .btn-submit { background-color: #4a3728; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 1rem; width: 100%; }
+        .btn-submit:hover { background-color: #d4a373; color: #333; }
+
+        /* 대시보드 */
+        .summary-container { display: flex; gap: 15px; margin-bottom: 20px; }
+        .summary-card { flex: 1; background: #f9f9f9; padding: 15px; border-radius: 6px; text-align: center; border-left: 4px solid #4a3728; }
+        .summary-card h3 { margin: 0; font-size: 0.95rem; color: #666; }
+        .summary-card p { margin: 5px 0 0 0; font-size: 1.5rem; font-weight: bold; color: #4a3728; }
+
+        .btn-download { display: inline-block; padding: 4px 10px; background-color: #2a6f97; color: white; border-radius: 4px; font-size: 0.85rem; text-decoration: none; }
+        .user-welcome-bar { background-color: #d4a373; color: #333; padding: 10px; text-align: center; font-weight: bold; border-radius: 4px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>담벼락 카페 커뮤니티</h1>
+        <p>나지막한 담벼락 아래, 누구나 편하게 소통하는 따뜻한 공간</p>
+    </header>
+
+    <nav aria-label="메인 메뉴">
+        <ul>
+            <li><a href="#free-board-section">자유게시판</a></li>
+            <li><a href="#data-board-section">나눔 자료실</a></li>
+            <li><a href="#admin-section">⚙️ 회원 관리</a></li>
+        </ul>
+    </nav>
+
+    <main id="main-content">
+        
+        <div id="welcome-bar" class="user-welcome-bar">접속 중...</div>
+        
+        <!-- 1. 자유게시판 섹션 -->
+        <section id="free-board-section">
+            <h2>자유게시판</h2>
+            <table class="board-table" id="free-table">
+                <caption>자유게시판 목록</caption>
+                <thead>
+                    <tr>
+                        <th scope="col" style="width: 10%;">구분</th>
+                        <th scope="col" style="width: 55%;">이야기 내용</th>
+                        <th scope="col" style="width: 15%;">작성자</th>
+                        <th scope="col" style="width: 20%;">관리 조치</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>일반</td>
+                        <td class="title">
+                            <div>오늘 담벼락 카페 오픈했습니다! 환영합니다.</div>
+                            <div class="comment-area">
+                                <ul class="comment-list">
+                                    <li class="comment-item"><strong>커피조아:</strong> 첫 글 축하드립니다! 대박나세요.</li>
+                                </ul>
+                                <form class="comment-form" onsubmit="addComment(event, this)">
+                                    <input type="text" required placeholder="댓글을 남겨보세요...">
+                                    <button type="submit" class="btn-comment-submit">댓글달기</button>
+                                </form>
+                            </div>
+                        </td>
+                        <td>안내원</td>
+                        <td><button class="btn-delete" onclick="deletePost(this)">❌ 삭제</button></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <form class="simple-form" onsubmit="addFreePost(event)">
+                <h3>✍️ 자유게시판에 이야기 남기기</h3>
+                <div class="form-group">
+                    <textarea id="free-content" required placeholder="여기에 이야기 내용을 적고 아래 등록 버튼을 누르세요."></textarea>
+                </div>
+                <button type="submit" class="btn-submit">이야기 등록</button>
+            </form>
+        </section>
+
+
+        <!-- 2. 나눔 자료실 섹션 -->
+        <section id="data-board-section">
+            <h2>나눔 자료실</h2>
+            <table class="board-table" id="data-table">
+                <caption>자료실 다운로드 목록</caption>
+                <thead>
+                    <tr>
+                        <th scope="col" style="width: 10%;">번호</th>
+                        <th scope="col" style="width: 25%;">자료 제목</th>
+                        <th scope="col" style="width: 35%;">자료 설명</th>
+                        <th scope="col" style="width: 15%;">첨부 파일</th>
+                        <th scope="col" style="width: 15%;">관리 조치</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td class="title"><b>[음성] 카페 오시는 길 안내</b></td>
+                        <td class="title">보도 인도 중심의 음성 안내 파일입니다.</td>
+                        <td><a href="#" class="btn-download">오시는길.mp3</a></td>
+                        <td><button class="btn-delete" onclick="deletePost(this)">❌ 삭제</button></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <form class="simple-form" onsubmit="addDataPost(event)">
+                <h3>📁 나눔 자료실에 자료 올리기</h3>
+                <div class="form-group">
+                    <input type="text" id="data-title-input" required placeholder="업로드할 자료의 제목을 입력하세요.">
+                </div>
+                <div class="form-group">
+                    <textarea id="data-desc-input" rows="2" required placeholder="자료에 대한 상세 설명을 적어주세요."></textarea>
+                </div>
+                <div class="form-group" style="background: white; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                    <input type="file" id="data-file" required>
+                </div>
+                <button type="submit" class="btn-submit">자료 및 파일 업로드</button>
+            </form>
+        </section>
+
+
+        <!-- 3. 회원 관리 섹션 (정지 해제 완벽 적용) -->
+        <section id="admin-section">
+            <h2>⚙️ 회원 관리 (운영자 전용 메뉴)</h2>
+            <div class="summary-container">
+                <div class="summary-card"><h3>총 회원 수</h3><p id="total-users">1248</p></div>
+                <div class="summary-card"><h3>오늘 신규 가입</h3><p style="color:#2a6f97;">12</p></div>
+            </div>
+            <table class="board-table" id="member-table">
+                <caption>회원 목록 관리</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">아이디</th>
+                        <th scope="col">닉네임</th>
+                        <th scope="col">상태</th>
+                        <th scope="col" style="width: 35%;">운영자 조치 및 시뮬레이션</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>user111</td>
+                        <td>도배꾼빌런</td>
+                        <td class="member-status">일반회원</td>
+                        <td>
+                            <!-- 처음에 정지 버튼 상태로 노출 -->
+                            <button class="btn-admin-action btn-ban" onclick="toggleBanMember(this)">🛑 정지</button>
+                            <button class="btn-admin-action btn-kick" onclick="kickMember(this)">❌ 강퇴</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>user222</td>
+                        <td>떠날래요회원</td>
+                        <td class="member-status">일반회원</td>
+                        <td>
+                            <button class="btn-admin-action btn-leave" onclick="leaveMember(this)">🚶 자진탈퇴(테스트)</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+
+    <script>
+        const currentNickname = localStorage.getItem('savedNickname') || '운영자';
+        document.getElementById('welcome-bar').innerText = `☕ ${currentNickname}님 로그인 중 (운영자 관리 모드)`;
+
+        let totalUsersCount = 1248;
+
+        // [개선] 정지 및 정지 해제 토글 기능 함수
+        function toggleBanMember(button) {
+            const row = button.parentElement.parentElement;
+            const statusCell = row.querySelector('.member-status');
+            const nickname = row.cells[1].innerText;
+            
+            // 현재 상태가 일반회원인 경우 -> 정지시키기
+            if (!button.classList.contains('btn-unban')) {
+                statusCell.innerText = "🛑 정지 회원";
+                statusCell.style.color = "#f4a261";
+                statusCell.style.fontWeight = "bold";
+                
+                // 버튼을 '해제' 모드로 변경
+                button.innerText = "🔓 정지 해제";
+                button.className = "btn-admin-action btn-unban";
+                
+                alert(`[정지 조치] ${nickname} 회원의 활동이 정지되었습니다.`);
+            } 
+            // 현재 상태가 정지 회원인 경우 -> 정지 해제하기
+            else {
+                statusCell.innerText = "일반회원";
+                statusCell.style.color = "#333";
+                statusCell.style.fontWeight = "normal";
+                
+                // 버튼을 다시 '정지' 모드로 변경
+                button.innerText = "🛑 정지";
+                button.className = "btn-admin-action btn-ban";
+                
+                alert(`[정지 해제] ${nickname} 회원의 징계가 해제되어 정상 활동이 가능합니다!`);
+            }
+        }
+
+        // 회원 강퇴 함수
+        function kickMember(button) {
+            const row = button.parentElement.parentElement;
+            const nickname = row.cells[1].innerText;
+            
+            if(confirm(`🚨 [강제 탈퇴] 정말로 ${nickname} 회원을 카페에서 영구 퇴출(강퇴)하시겠습니까?`)) {
+                row.remove();
+                totalUsersCount--;
+                document.getElementById('total-users').innerText = totalUsersCount;
+                alert(`${nickname} 회원이 강제 탈퇴 처리되었습니다.`);
+            }
+        }
+
+        // 회원 자진 탈퇴 함수
+        function leaveMember(button) {
+            const row = button.parentElement.parentElement;
+            const nickname = row.cells[1].innerText;
+            
+            if(confirm(`[탈퇴 시뮬레이션] 회원 '${nickname}' 님이 탈퇴 신청을 누른 상황을 테스트하시겠습니까?`)) {
+                row.remove();
+                totalUsersCount--;
+                document.getElementById('total-users').innerText = totalUsersCount;
+                alert(`[탈퇴 완료] ${nickname} 회원이 탈퇴 처리되었습니다.`);
+            }
+        }
+
+        // 자유게시판 등록
+        function addFreePost(event) {
+            event.preventDefault();
+            const content = document.getElementById('free-content').value;
+            const tableBody = document.querySelector('#free-table tbody');
+            
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>일반</td>
+                <td class="title">
+                    <div>${content}</div>
+                    <div class="comment-area">
+                        <ul class="comment-list"></ul>
+                        <form class="comment-form" onsubmit="addComment(event, this)">
+                            <input type="text" required placeholder="댓글을 남겨보세요...">
+                            <button type="submit" class="btn-comment-submit">댓글달기</button>
+                        </form>
+                    </div>
+                </td>
+                <td>${currentNickname}</td>
+                <td><button class="btn-delete" onclick="deletePost(this)">❌ 삭제</button></td>
+            `;
+            tableBody.appendChild(newRow);
+            document.getElementById('free-content').value = ''; 
+        }
+
+        // 댓글 등록
+        function addComment(event, formElement) {
+            event.preventDefault();
+            const inputElement = formElement.querySelector('input[type="text"]');
+            const commentText = inputElement.value.trim();
+            const commentList = formElement.previousElementSibling; 
+            if(commentText === "") return;
+
+            const newComment = document.createElement('li');
+            newComment.className = 'comment-item';
+            newComment.innerHTML = `<strong>${currentNickname}:</strong> ${commentText}`;
+            commentList.appendChild(newComment);
+            inputElement.value = ''; 
+        }
+
+        // 게시글 삭제
+        function deletePost(buttonElement) {
+            if(confirm("🚨 이 게시물을 완전히 삭제하시겠습니까?")) {
+                const row = buttonElement.parentElement.parentElement;
+                row.remove();
+                alert("삭제가 완료되었습니다.");
+            }
+        }
+
+        // 자료실 등록
+        function addDataPost(event) {
+            event.preventDefault();
+            const title = document.getElementById('data-title-input').value;
+            const desc = document.getElementById('data-desc-input').value;
+            const fileInput = document.getElementById('data-file');
+            const fileName = fileInput.files[0] ? fileInput.files[0].name : '첨부파일.file';
+            const tableBody = document.querySelector('#data-table tbody');
+            const nextNo = tableBody.rows.length + 1;
+
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${nextNo}</td>
+                <td class="title"><b>${title}</b></td>
+                <td class="title">${desc}</td>
+                <td><a href="#" class="btn-download">${fileName}</a></td>
+                <td><button class="btn-delete" onclick="deletePost(this)">❌ 삭제</button></td>
+            `;
+            tableBody.appendChild(newRow);
+            document.getElementById('data-title-input').value = '';
+            document.getElementById('data-desc-input').value = '';
+            fileInput.value = '';
+        }
+    </script>
+</body>
+</html>

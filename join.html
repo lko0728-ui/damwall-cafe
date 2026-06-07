@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>담벼락 카페 - 간편 회원가입</title>
+    <style>
+        body { font-family: 'Malgun Gothic', sans-serif; line-height: 1.6; background-color: #fcfbf9; color: #333; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .join-container { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); width: 100%; max-width: 400px; box-sizing: border-box; border-top: 8px solid #4a3728; }
+        h1 { font-size: 1.8rem; color: #4a3728; margin-top: 0; margin-bottom: 10px; text-align: center; }
+        .intro-text { font-size: 0.95rem; color: #666; text-align: center; margin-bottom: 30px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 8px; font-size: 1.1rem; }
+        .form-group input { width: 100%; padding: 15px; border: 2px solid #4a3728; border-radius: 6px; box-sizing: border-box; font-size: 1.1rem; }
+        .tip-text { font-size: 0.85rem; color: #555; margin-top: 8px; background-color: #f5f4f0; padding: 8px; border-radius: 4px; }
+        .btn-join { width: 100%; padding: 15px; background-color: #4a3728; color: white; border: none; border-radius: 6px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .btn-join:hover { background-color: #d4a373; color: #333; }
+    </style>
+</head>
+<body>
+
+    <main class="join-container">
+        <h1>담벼락 카페 가입</h1>
+        <p class="intro-text">반갑습니다! 사용할 닉네임 딱 하나만 정해주세요.</p>
+
+        <form id="joinForm" onsubmit="handleJoin(event)">
+            <div class="form-group">
+                <label for="user-nickname">닉네임 설정</label>
+                <input type="text" id="user-nickname" name="userNickname" required placeholder="예: 따뜻한라떼" autofocus>
+                <p id="nickname-tip" class="tip-text">💡 닉네임을 적고 키보드의 <strong>엔터(Enter)</strong>를 누르면 바로 가입됩니다!</p>
+            </div>
+            <button type="submit" class="btn-join">가입 완료하기</button>
+        </form>
+    </main>
+
+    <script>
+        function handleJoin(event) {
+            event.preventDefault(); 
+            const nickname = document.getElementById('user-nickname').value.trim(); 
+            
+            if(nickname === "") {
+                alert("닉네임을 입력해주세요!");
+                return;
+            }
+
+            // [핵심] 사용자가 입력한 닉네임을 브라우저에 임시 보관합니다.
+            localStorage.setItem('savedNickname', nickname);
+
+            alert(`🎉 환영합니다, ${nickname}님!\n확인을 누르면 홈 화면으로 자동 이동합니다.`);
+            window.location.replace('index.html');
+        }
+    </script>
+</body>
+</html>
