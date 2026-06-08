@@ -100,6 +100,7 @@
 <div class="container">
     <h1>☕ 담벼락 카페</h1>
 
+    <!-- 공지사항 상자 -->
     <div class="notice-box">
         <h3 style="margin:0 0 10px 0; color:#f08c00;">📢 이용 안내 공지사항 
             <button class="save-btn" onclick="saveNotice()">💾 저장</button>
@@ -107,19 +108,31 @@
         <textarea id="noticeInput" class="notice-textarea" placeholder="공지사항을 적어주세요."></textarea>
     </div>
 
+    <!-- 🛠️ 메뉴 버튼 순서 교체완료! 홈 기준으로 3번에 가입/탈퇴가 오도록 수정 -->
     <div class="tab-menu">
-        <button class="tab-btn active" onclick="switchTab('home')">🏡 홈 대문</button>
-        <button class="tab-btn" onclick="switchTab('join')">🔐 가입/탈퇴</button>
-        <button class="tab-btn" onclick="switchTab('board')">💬 자유게시판</button>
-        <button class="tab-btn" onclick="switchTab('archive')">📂 자료실</button>
+        <button class="tab-btn active" onclick="switchTab('home')">🏡 1. 홈 대문</button>
+        <button class="tab-btn" onclick="switchTab('board')">💬 2. 자유게시판</button>
+        <button class="tab-btn" onclick="switchTab('join')">🔐 3. 가입/탈퇴</button>
+        <button class="tab-btn" onclick="switchTab('archive')">📂 4. 자료실</button>
         <button class="tab-btn admin" onclick="switchTab('admin')">👑 [운영자]</button>
     </div>
 
+    <!-- 1. 홈 대문 방 -->
     <div id="home" class="content-box active">
         <h3 style="text-align: center; color: #007bff; margin-top: 50px;">👋 담벼락 카페에 오신 것을 환영합니다!</h3>
         <p style="text-align: center; color: #555;">메뉴를 통해 자유게시판, 자료실을 이용해 소통해 보세요.</p>
     </div>
 
+    <!-- 2. 자유게시판 방 -->
+    <div id="board" class="content-box">
+        <h3>💬 자유게시판</h3>
+        <div class="input-group"><input type="text" id="regName" placeholder="가입한 닉네임 입력"></div>
+        <div class="input-group"><textarea id="regContent" placeholder="정지된 회원은 글을 쓸 수 없습니다!"></textarea></div>
+        <button class="submit-btn" onclick="addPost()">✍️ 글 등록하기</button>
+        <div id="postList" class="post-list"></div>
+    </div>
+
+    <!-- 3. 회원가입 및 탈퇴 방 (여기가 3번 방으로 연동 위치 조정되었습니다) -->
     <div id="join" class="content-box">
         <h3>🔐 회원 관리 (가입 / 탈퇴)</h3>
         <div style="background: #e8f4fd; padding: 12px; border-radius: 5px; margin-bottom: 15px; font-size: 14px; color: #0056b3;">
@@ -136,14 +149,7 @@
         <button class="submit-btn" style="background-color: #dc3545;" onclick="leaveMember()">👋 카페 탈퇴하기</button>
     </div>
 
-    <div id="board" class="content-box">
-        <h3>💬 자유게시판</h3>
-        <div class="input-group"><input type="text" id="regName" placeholder="가입한 닉네임 입력"></div>
-        <div class="input-group"><textarea id="regContent" placeholder="정지된 회원은 글을 쓸 수 없습니다!"></textarea></div>
-        <button class="submit-btn" onclick="addPost()">✍️ 글 등록하기</button>
-        <div id="postList" class="post-list"></div>
-    </div>
-
+    <!-- 4. 자료실 방 -->
     <div id="archive" class="content-box">
         <h3>📂 파일 자료실</h3>
         <div class="input-group"><input type="text" id="fileTitle" placeholder="자료 제목 입력"></div>
@@ -153,6 +159,7 @@
         <div id="fileList" class="post-list"></div>
     </div>
 
+    <!-- 5. 👑 운영자 전용 관리자 방 -->
     <div id="admin" class="content-box" style="background-color: #f8f9fa;">
         <h3 style="color: #343a40; border-bottom: 2px solid #343a40; padding-bottom: 5px;">👑 대장님 전용 회원 관리실</h3>
         <p style="font-weight: bold; font-size: 16px; color: #007bff;">📊 총 가입 회원 수: <span id="totalCount">0</span>명</p>
@@ -167,12 +174,13 @@
                 </tr>
             </thead>
             <tbody id="memberAdminList">
-                </tbody>
+            </tbody>
         </table>
     </div>
 </div>
 
 <script>
+    // 메뉴 전환 기능 (바뀐 버튼 순서에 맞게 자바스크립트 매핑 수정)
     function switchTab(tabId) {
         document.querySelectorAll('.content-box').forEach(box => box.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -180,8 +188,8 @@
         
         const btns = document.querySelectorAll('.tab-btn');
         if(tabId === 'home') btns[0].classList.add('active');
-        if(tabId === 'join') btns[1].classList.add('active');
-        if(tabId === 'board') btns[2].classList.add('active');
+        if(tabId === 'board') btns[1].classList.add('active');
+        if(tabId === 'join') btns[2].classList.add('active');
         if(tabId === 'archive') btns[3].classList.add('active');
         if(tabId === 'admin') btns[4].classList.add('active');
     }
@@ -190,7 +198,6 @@
         const savedNotice = localStorage.getItem('cafeNotice');
         document.getElementById('noticeInput').value = savedNotice ? savedNotice : "우리 카페에 오신 것을 환영합니다! 매너 가입 필수!";
         
-        // 초기 임시 회원 데이터 채워두기 (대장님 테스트용)
         let members = JSON.parse(localStorage.getItem('cafeMembers')) || [];
         if(members.length === 0) {
             members = [
@@ -210,14 +217,11 @@
         alert('📢 공지사항이 저장되었습니다!');
     }
 
-    // [회원기능] 가입하기
     function registerMember() {
         const name = document.getElementById('joinName').value.trim();
         if(!name) { alert('닉네임을 입력해 주세요!'); return; }
-
         let members = JSON.parse(localStorage.getItem('cafeMembers')) || [];
         if(members.some(m => m.name === name)) { alert('이미 카페에 존재하는 닉네임입니다!'); return; }
-
         members.push({ name: name, status: "정상" });
         localStorage.setItem('cafeMembers', JSON.stringify(members));
         document.getElementById('joinName').value = '';
@@ -225,16 +229,12 @@
         loadAdminMembers();
     }
 
-    // [회원기능] 탈퇴하기
     function leaveMember() {
         const name = document.getElementById('leaveName').value.trim();
         if(!name) { alert('탈퇴할 닉네임을 입력해 주세요!'); return; }
-
         let members = JSON.parse(localStorage.getItem('cafeMembers')) || [];
         const index = members.findIndex(m => m.name === name);
-        
         if(index === -1) { alert('가입 정보가 없는 닉네임입니다.'); return; }
-        
         if(confirm(`정말 [${name}] 닉네임을 카페에서 탈퇴 처리하시겠습니까?`)) {
             members.splice(index, 1);
             localStorage.setItem('cafeMembers', JSON.stringify(members));
@@ -244,33 +244,25 @@
         }
     }
 
-    // [운영자기능] 관리자 화면 갱신 (회원 수, 정지, 해제, 강퇴)
     function loadAdminMembers() {
         const members = JSON.parse(localStorage.getItem('cafeMembers')) || [];
         document.getElementById('totalCount').innerText = members.length;
-        
         const tbody = document.getElementById('memberAdminList');
         tbody.innerHTML = members.length === 0 ? '<tr><td colspan="3" style="color:#aaa;">가입한 회원이 없습니다.</td></tr>' : '';
-        
         members.forEach((m, idx) => {
             let statusColor = m.status === '정상' ? 'green' : 'red';
             let toggleBanBtn = m.status === '정상' 
                 ? `<button class="action-btn btn-ban" onclick="changeStatus(${idx}, '정지')">🚫 정지</button>`
                 : `<button class="action-btn btn-unban" onclick="changeStatus(${idx}, '정상')">✅ 해제</button>`;
-            
             tbody.innerHTML += `
                 <tr>
                     <td><b>${m.name}</b></td>
                     <td style="color:${statusColor}; font-weight:bold;">${m.status}</td>
-                    <td>
-                        ${toggleBanBtn}
-                        <button class="action-btn btn-kick" onclick="kickMember(${idx})">❌ 강퇴</button>
-                    </td>
+                    <td>${toggleBanBtn}<button class="action-btn btn-kick" onclick="kickMember(${idx})">❌ 강퇴</button></td>
                 </tr>`;
         });
     }
 
-    // [운영자기능] 정지 및 정지해제 토글
     function changeStatus(idx, newStatus) {
         let members = JSON.parse(localStorage.getItem('cafeMembers')) || [];
         members[idx].status = newStatus;
@@ -279,7 +271,6 @@
         alert(`멤버의 상태를 [${newStatus}] 상태로 변경했습니다.`);
     }
 
-    // [운영자기능] 강퇴하기
     function kickMember(idx) {
         let members = JSON.parse(localStorage.getItem('cafeMembers')) || [];
         if(confirm(`[${members[idx].name}] 회원을 강제로 추방(강퇴)하시겠습니까?`)) {
@@ -290,7 +281,6 @@
         }
     }
 
-    // 회원이 정상 회원인지, 정지 회원인지 체크하는 검증 함수
     function checkMemberStatus(name) {
         const members = JSON.parse(localStorage.getItem('cafeMembers')) || [];
         const user = members.find(m => m.name === name);
@@ -299,18 +289,14 @@
         return '정상';
     }
 
-    // [자유게시판] 글쓰기 (정지 회원 차단 로직 포함)
     function addPost() {
         const name = document.getElementById('regName').value.trim();
         const content = document.getElementById('regContent').value.trim();
         if(!name || !content) { alert('닉네임과 내용을 모두 입력해 주세요!'); return; }
-
         if(checkMemberStatus(name) !== '정상') return;
-
         let posts = JSON.parse(localStorage.getItem('cafePosts')) || [];
         posts.unshift({ name: name, content: content, date: new Date().toLocaleString() });
         localStorage.setItem('cafePosts', JSON.stringify(posts));
-        
         document.getElementById('regContent').value = '';
         loadPosts();
     }
@@ -324,19 +310,15 @@
         });
     }
 
-    // [자료실] 업로드
     function uploadFile() {
         const title = document.getElementById('fileTitle').value.trim();
         const desc = document.getElementById('fileDesc').value.trim();
         const fileInput = document.getElementById('fileInput');
-        
         if(!title || !desc || !fileInput.files.length) { alert('모든 칸을 채우고 파일을 선택해 주세요!'); return; }
-        
         const file = fileInput.files[0];
         let files = JSON.parse(localStorage.getItem('cafeFiles')) || [];
         files.unshift({ title: title, desc: desc, fileName: file.name, size: (file.size/1024).toFixed(1) + ' KB', date: new Date().toLocaleDateString() });
         localStorage.setItem('cafeFiles', JSON.stringify(files));
-        
         document.getElementById('fileTitle').value = ''; document.getElementById('fileDesc').value = ''; fileInput.value = '';
         alert('📤 자료실 등록 완료!');
         loadFiles();
