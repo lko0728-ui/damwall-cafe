@@ -13,7 +13,7 @@
             text-align: center;
         }
         .container {
-            max-width: 600px;
+            max-width: 650px;
             margin: 0 auto;
             background: white;
             padding: 30px;
@@ -44,36 +44,25 @@
         /* 탭 메뉴 버튼 */
         .tab-menu {
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-around;
             background: #e9ecef;
             padding: 8px;
             border-radius: 10px;
             margin-bottom: 20px;
+            gap: 5px;
         }
         .tab-btn {
-            background: none;
-            border: none;
-            font-size: 15px;
-            font-weight: bold;
-            color: #495057;
-            padding: 10px;
-            border-radius: 5px;
-            width: 30%;
+            background: none; border: none; font-size: 14px; font-weight: bold;
+            color: #495057; padding: 10px; border-radius: 5px; cursor: pointer; flex: 1; min-width: 80px;
         }
-        .tab-btn.active {
-            background-color: #007bff;
-            color: white;
-        }
+        .tab-btn.active { background-color: #007bff; color: white; }
+        .tab-btn.admin { background-color: #343a40; color: #ffc107; }
 
         /* 게시판 본문 내용 상자 */
         .content-box {
-            display: none;
-            border: 1px solid #dee2e6;
-            border-radius: 10px;
-            padding: 20px;
-            min-height: 300px;
-            background: #fff;
-            text-align: left;
+            display: none; border: 1px solid #dee2e6; border-radius: 10px;
+            padding: 20px; min-height: 300px; background: #fff; text-align: left;
         }
         .content-box.active { display: block; }
 
@@ -85,32 +74,25 @@
         }
         .submit-btn {
             background-color: #28a745; color: white; border: none;
-            padding: 12px 15px; border-radius: 5px; width: 100%; font-weight: bold; font-size: 16px;
+            padding: 12px 15px; border-radius: 5px; width: 100%; font-weight: bold; font-size: 16px; cursor: pointer;
         }
 
-        /* 등록된 글/자료 목록 스타일 */
+        /* 목록 스타일 */
         .post-list { margin-top: 20px; }
         .post-item {
             background: #f8f9fa; border: 1px solid #e9ecef;
             padding: 15px; margin-bottom: 15px; border-radius: 8px;
         }
         .post-meta { font-size: 12px; color: #666; font-weight: bold; margin-bottom: 8px; }
-        .post-content { font-size: 15px; color: #333; margin-bottom: 10px; line-height: 1.4; }
 
-        /* 댓글 영역 스타일 */
-        .comment-section {
-            background: #fff; padding: 10px; border-radius: 5px; border: 1px solid #eee; margin-top: 10px;
-        }
-        .comment-item {
-            font-size: 13px; border-bottom: 1px dashed #eee; padding: 5px 0;
-        }
-        .comment-form { display: flex; margin-top: 8px; gap: 5px; }
-        .comment-form input {
-            padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;
-        }
-        .comment-btn {
-            background: #17a2b8; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 13px;
-        }
+        /* 회원 관리 테이블 스타일 */
+        .member-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
+        .member-table th, .member-table td { border: 1px solid #dee2e6; padding: 8px; text-align: center; }
+        .member-table th { background-color: #f1f3f5; }
+        .action-btn { padding: 3px 7px; border: none; border-radius: 3px; font-size: 12px; cursor: pointer; margin: 2px; color: white; }
+        .btn-ban { background-color: #dc3545; }
+        .btn-unban { background-color: #28a745; }
+        .btn-kick { background-color: #6c757d; }
     </style>
 </head>
 <body>
@@ -127,38 +109,66 @@
 
     <div class="tab-menu">
         <button class="tab-btn active" onclick="switchTab('home')">🏡 홈 대문</button>
+        <button class="tab-btn" onclick="switchTab('join')">🔐 가입/탈퇴</button>
         <button class="tab-btn" onclick="switchTab('board')">💬 자유게시판</button>
         <button class="tab-btn" onclick="switchTab('archive')">📂 자료실</button>
+        <button class="tab-btn admin" onclick="switchTab('admin')">👑 [운영자]</button>
     </div>
 
     <div id="home" class="content-box active">
         <h3 style="text-align: center; color: #007bff; margin-top: 50px;">👋 담벼락 카페에 오신 것을 환영합니다!</h3>
-        <p style="text-align: center; color: #555;">손님들이 남긴 글에 댓글을 달아주거나 자료실을 이용해 보세요.</p>
+        <p style="text-align: center; color: #555;">메뉴를 통해 자유게시판, 자료실을 이용해 소통해 보세요.</p>
+    </div>
+
+    <div id="join" class="content-box">
+        <h3>🔐 회원 관리 (가입 / 탈퇴)</h3>
+        <div style="background: #e8f4fd; padding: 12px; border-radius: 5px; margin-bottom: 15px; font-size: 14px; color: #0056b3;">
+            💡 테스트를 위해 지인들에게 여기서 닉네임을 등록하고 가입하라고 안내해 보세요!
+        </div>
+        <div class="input-group"><input type="text" id="joinName" placeholder="활동할 닉네임 입력"></div>
+        <button class="submit-btn" onclick="registerMember()">📝 회원 가입 신청하기</button>
+        
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 25px 0;">
+        
+        <h4 style="color: #dc3545;">🚨 회원 탈퇴 기능</h4>
+        <p style="font-size: 13px; color: #666;">카페를 탈퇴하시려면 가입하셨던 닉네임을 입력 후 탈퇴 버튼을 누르세요.</p>
+        <div class="input-group"><input type="text" id="leaveName" placeholder="탈퇴할 닉네임 입력"></div>
+        <button class="submit-btn" style="background-color: #dc3545;" onclick="leaveMember()">👋 카페 탈퇴하기</button>
     </div>
 
     <div id="board" class="content-box">
-        <h3>💬 자유게시판 글쓰기</h3>
-        <div class="input-group"><input type="text" id="regName" placeholder="닉네임 입력"></div>
-        <div class="input-group"><textarea id="regContent" placeholder="여기에 자유롭게 글을 남겨주세요!"></textarea></div>
+        <h3>💬 자유게시판</h3>
+        <div class="input-group"><input type="text" id="regName" placeholder="가입한 닉네임 입력"></div>
+        <div class="input-group"><textarea id="regContent" placeholder="정지된 회원은 글을 쓸 수 없습니다!"></textarea></div>
         <button class="submit-btn" onclick="addPost()">✍️ 글 등록하기</button>
-        
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-        <h4>📋 등록된 글 목록</h4>
         <div id="postList" class="post-list"></div>
     </div>
 
     <div id="archive" class="content-box">
-        <h3>📂 파일 자료실 등록</h3>
+        <h3>📂 파일 자료실</h3>
         <div class="input-group"><input type="text" id="fileTitle" placeholder="자료 제목 입력"></div>
-        <div class="input-group"><textarea id="fileDesc" placeholder="자료에 대한 상세 설명을 적어주세요."></textarea></div>
-        <div class="input-group">
-            <input type="file" id="fileInput">
-        </div>
-        <button class="submit-btn" style="background-color: #007bff;" onclick="uploadFile()">📤 자료 등록하기</button>
-
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-        <h4>📦 공유된 파일 목록</h4>
+        <div class="input-group"><textarea id="fileDesc" placeholder="자료에 대한 상세 설명"></textarea></div>
+        <div class="input-group"><input type="file" id="fileInput"></div>
+        <button class="submit-btn" style="background-color: #17a2b8;" onclick="uploadFile()">📤 자료 등록하기</button>
         <div id="fileList" class="post-list"></div>
+    </div>
+
+    <div id="admin" class="content-box" style="background-color: #f8f9fa;">
+        <h3 style="color: #343a40; border-bottom: 2px solid #343a40; padding-bottom: 5px;">👑 대장님 전용 회원 관리실</h3>
+        <p style="font-weight: bold; font-size: 16px; color: #007bff;">📊 총 가입 회원 수: <span id="totalCount">0</span>명</p>
+        
+        <h4>👥 회원 명단 및 제어 상태</h4>
+        <table class="member-table">
+            <thead>
+                <tr>
+                    <th>닉네임</th>
+                    <th>상태</th>
+                    <th>명령 제어</th>
+                </tr>
+            </thead>
+            <tbody id="memberAdminList">
+                </tbody>
+        </table>
     </div>
 </div>
 
@@ -167,132 +177,181 @@
         document.querySelectorAll('.content-box').forEach(box => box.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
-        if(tabId === 'home') document.querySelectorAll('.tab-btn')[0].classList.add('active');
-        if(tabId === 'board') document.querySelectorAll('.tab-btn')[1].classList.add('active');
-        if(tabId === 'archive') document.querySelectorAll('.tab-btn')[2].classList.add('active');
+        
+        const btns = document.querySelectorAll('.tab-btn');
+        if(tabId === 'home') btns[0].classList.add('active');
+        if(tabId === 'join') btns[1].classList.add('active');
+        if(tabId === 'board') btns[2].classList.add('active');
+        if(tabId === 'archive') btns[3].classList.add('active');
+        if(tabId === 'admin') btns[4].classList.add('active');
     }
 
     window.onload = function() {
         const savedNotice = localStorage.getItem('cafeNotice');
-        document.getElementById('noticeInput').value = savedNotice ? savedNotice : "우리 카페에 오신 것을 환영합니다! 매너 소통 부탁드립니다.";
+        document.getElementById('noticeInput').value = savedNotice ? savedNotice : "우리 카페에 오신 것을 환영합니다! 매너 가입 필수!";
+        
+        // 초기 임시 회원 데이터 채워두기 (대장님 테스트용)
+        let members = JSON.parse(localStorage.getItem('cafeMembers')) || [];
+        if(members.length === 0) {
+            members = [
+                { name: "홍길동", status: "정상" },
+                { name: "불량유저", status: "정상" }
+            ];
+            localStorage.setItem('cafeMembers', JSON.stringify(members));
+        }
+
         loadPosts();
         loadFiles();
+        loadAdminMembers();
     }
+
     function saveNotice() {
         localStorage.setItem('cafeNotice', document.getElementById('noticeInput').value);
         alert('📢 공지사항이 저장되었습니다!');
     }
 
-    // [자유게시판] 원글 등록 (아이디 부여)
+    // [회원기능] 가입하기
+    function registerMember() {
+        const name = document.getElementById('joinName').value.trim();
+        if(!name) { alert('닉네임을 입력해 주세요!'); return; }
+
+        let members = JSON.parse(localStorage.getItem('cafeMembers')) || [];
+        if(members.some(m => m.name === name)) { alert('이미 카페에 존재하는 닉네임입니다!'); return; }
+
+        members.push({ name: name, status: "정상" });
+        localStorage.setItem('cafeMembers', JSON.stringify(members));
+        document.getElementById('joinName').value = '';
+        alert(`🎉 [${name}]님, 회원가입이 완료되었습니다!`);
+        loadAdminMembers();
+    }
+
+    // [회원기능] 탈퇴하기
+    function leaveMember() {
+        const name = document.getElementById('leaveName').value.trim();
+        if(!name) { alert('탈퇴할 닉네임을 입력해 주세요!'); return; }
+
+        let members = JSON.parse(localStorage.getItem('cafeMembers')) || [];
+        const index = members.findIndex(m => m.name === name);
+        
+        if(index === -1) { alert('가입 정보가 없는 닉네임입니다.'); return; }
+        
+        if(confirm(`정말 [${name}] 닉네임을 카페에서 탈퇴 처리하시겠습니까?`)) {
+            members.splice(index, 1);
+            localStorage.setItem('cafeMembers', JSON.stringify(members));
+            document.getElementById('leaveName').value = '';
+            alert('👋 카페 탈퇴 처리가 완료되었습니다.');
+            loadAdminMembers();
+        }
+    }
+
+    // [운영자기능] 관리자 화면 갱신 (회원 수, 정지, 해제, 강퇴)
+    function loadAdminMembers() {
+        const members = JSON.parse(localStorage.getItem('cafeMembers')) || [];
+        document.getElementById('totalCount').innerText = members.length;
+        
+        const tbody = document.getElementById('memberAdminList');
+        tbody.innerHTML = members.length === 0 ? '<tr><td colspan="3" style="color:#aaa;">가입한 회원이 없습니다.</td></tr>' : '';
+        
+        members.forEach((m, idx) => {
+            let statusColor = m.status === '정상' ? 'green' : 'red';
+            let toggleBanBtn = m.status === '정상' 
+                ? `<button class="action-btn btn-ban" onclick="changeStatus(${idx}, '정지')">🚫 정지</button>`
+                : `<button class="action-btn btn-unban" onclick="changeStatus(${idx}, '정상')">✅ 해제</button>`;
+            
+            tbody.innerHTML += `
+                <tr>
+                    <td><b>${m.name}</b></td>
+                    <td style="color:${statusColor}; font-weight:bold;">${m.status}</td>
+                    <td>
+                        ${toggleBanBtn}
+                        <button class="action-btn btn-kick" onclick="kickMember(${idx})">❌ 강퇴</button>
+                    </td>
+                </tr>`;
+        });
+    }
+
+    // [운영자기능] 정지 및 정지해제 토글
+    function changeStatus(idx, newStatus) {
+        let members = JSON.parse(localStorage.getItem('cafeMembers')) || [];
+        members[idx].status = newStatus;
+        localStorage.setItem('cafeMembers', JSON.stringify(members));
+        loadAdminMembers();
+        alert(`멤버의 상태를 [${newStatus}] 상태로 변경했습니다.`);
+    }
+
+    // [운영자기능] 강퇴하기
+    function kickMember(idx) {
+        let members = JSON.parse(localStorage.getItem('cafeMembers')) || [];
+        if(confirm(`[${members[idx].name}] 회원을 강제로 추방(강퇴)하시겠습니까?`)) {
+            alert(`[${members[idx].name}] 회원이 강퇴되었습니다.`);
+            members.splice(idx, 1);
+            localStorage.setItem('cafeMembers', JSON.stringify(members));
+            loadAdminMembers();
+        }
+    }
+
+    // 회원이 정상 회원인지, 정지 회원인지 체크하는 검증 함수
+    function checkMemberStatus(name) {
+        const members = JSON.parse(localStorage.getItem('cafeMembers')) || [];
+        const user = members.find(m => m.name === name);
+        if(!user) { alert('⚠️ 카페에 가입되지 않은 닉네임입니다. 가입을 먼저 진행해 주세요!'); return '미가입'; }
+        if(user.status === '정지') { alert('🚫 대장님에 의해 [활동 정지] 처리가 된 닉네임입니다. 글을 쓸 수 없습니다.'); return '정지'; }
+        return '정상';
+    }
+
+    // [자유게시판] 글쓰기 (정지 회원 차단 로직 포함)
     function addPost() {
         const name = document.getElementById('regName').value.trim();
         const content = document.getElementById('regContent').value.trim();
         if(!name || !content) { alert('닉네임과 내용을 모두 입력해 주세요!'); return; }
 
+        if(checkMemberStatus(name) !== '정상') return;
+
         let posts = JSON.parse(localStorage.getItem('cafePosts')) || [];
-        const postId = Date.now(); // 글 구분을 위한 고유 번호
-        posts.unshift({ id: postId, name: name, content: content, date: new Date().toLocaleString(), comments: [] });
+        posts.unshift({ name: name, content: content, date: new Date().toLocaleString() });
         localStorage.setItem('cafePosts', JSON.stringify(posts));
         
-        document.getElementById('regName').value = '';
         document.getElementById('regContent').value = '';
         loadPosts();
     }
 
-    // [자유게시판] 목록 및 댓글창 화면 표시
     function loadPosts() {
         const posts = JSON.parse(localStorage.getItem('cafePosts')) || [];
         const listDiv = document.getElementById('postList');
         listDiv.innerHTML = posts.length === 0 ? '<p style="color:#aaa;">첫 글을 남겨보세요!</p>' : '';
-        
         posts.forEach(p => {
-            let commentHtml = '';
-            p.comments.forEach(c => {
-                commentHtml += `<div class="comment-item"><b>${c.name}:</b> ${c.content} <span style="font-size:10px;color:#aaa;">(${c.date})</span></div>`;
-            });
-
-            listDiv.innerHTML += `
-                <div class="post-item">
-                    <div class="post-meta">👤 ${p.name} (${p.date})</div>
-                    <div class="post-content">${p.content}</div>
-                    
-                    <div class="comment-section">
-                        <div id="comments-${p.id}">${commentHtml ? commentHtml : '<p style="color:#bbb; font-size:12px; margin:0;">첫 댓글을 달아보세요!</p>'}</div>
-                        <div class="comment-form">
-                            <input type="text" id="cName-${p.id}" placeholder="이름" style="width:25%;">
-                            <input type="text" id="cContent-${p.id}" placeholder="댓글 내용을 입력하세요" style="width:60%;">
-                            <button class="comment-btn" onclick="addComment(${p.id})">답글</button>
-                        </div>
-                    </div>
-                </div>`;
+            listDiv.innerHTML += `<div class="post-item"><div class="post-meta">👤 ${p.name} (${p.date})</div><div>${p.content}</div></div>`;
         });
     }
 
-    // [자유게시판] 댓글 등록 기능
-    function addComment(postId) {
-        const cName = document.getElementById(`cName-${postId}`).value.trim();
-        const cContent = document.getElementById(`cContent-${postId}`).value.trim();
-        if(!cName || !cContent) { alert('댓글 이름과 내용을 적어주세요!'); return; }
-
-        let posts = JSON.parse(localStorage.getItem('cafePosts')) || [];
-        const postIndex = posts.findIndex(p => p.id === postId);
-        
-        if(postIndex !== -1) {
-            posts[postIndex].comments.push({
-                name: cName,
-                content: cContent,
-                date: new Date().toLocaleTimeString()
-            });
-            localStorage.setItem('cafePosts', JSON.stringify(posts));
-            loadPosts();
-        }
-    }
-
-    // [자료실] 제목 + 설명 + 파일 등록 기능
+    // [자료실] 업로드
     function uploadFile() {
         const title = document.getElementById('fileTitle').value.trim();
         const desc = document.getElementById('fileDesc').value.trim();
         const fileInput = document.getElementById('fileInput');
         
-        if(!title || !desc) { alert('자료 제목과 설명을 먼저 적어주세요!'); return; }
-        if(!fileInput.files.length) { alert('업로드할 파일을 선택해 주세요!'); return; }
+        if(!title || !desc || !fileInput.files.length) { alert('모든 칸을 채우고 파일을 선택해 주세요!'); return; }
         
         const file = fileInput.files[0];
         let files = JSON.parse(localStorage.getItem('cafeFiles')) || [];
-        files.unshift({ 
-            title: title,
-            desc: desc,
-            fileName: file.name, 
-            size: (file.size/1024).toFixed(1) + ' KB', 
-            date: new Date().toLocaleString() 
-        });
+        files.unshift({ title: title, desc: desc, fileName: file.name, size: (file.size/1024).toFixed(1) + ' KB', date: new Date().toLocaleDateString() });
         localStorage.setItem('cafeFiles', JSON.stringify(files));
         
-        document.getElementById('fileTitle').value = '';
-        document.getElementById('fileDesc').value = '';
-        fileInput.value = '';
-        alert('📤 설명이 포함된 자료가 성공적으로 등록되었습니다!');
+        document.getElementById('fileTitle').value = ''; document.getElementById('fileDesc').value = ''; fileInput.value = '';
+        alert('📤 자료실 등록 완료!');
         loadFiles();
     }
 
-    // [자료실] 목록 표시
     function loadFiles() {
         const files = JSON.parse(localStorage.getItem('cafeFiles')) || [];
         const listDiv = document.getElementById('fileList');
         listDiv.innerHTML = files.length === 0 ? '<p style="color:#aaa;">공유된 자료가 없습니다.</p>' : '';
-        
         files.forEach(f => {
             listDiv.innerHTML += `
                 <div class="post-item" style="border-left: 4px solid #17a2b8;">
-                    <div style="font-size:16px; font-weight:bold; color:#111;">📋 제목: ${f.title}</div>
-                    <div style="font-size:12px; color:#666; margin:5px 0;">등록일: ${f.date}</div>
-                    <div style="background:#fff; padding:10px; border-radius:5px; margin:8px 0; font-size:14px; border:1px solid #eee;">
-                        <b>설명:</b> ${f.desc}
-                    </div>
-                    <div class="post-meta" style="margin-bottom:0; color:#007bff;">
-                        📎 첨부파일: ${f.fileName} (${f.size}) 
-                        <span style="margin-left:10px; background:#e2e6ea; padding:2px 6px; border-radius:3px; color:#333; font-size:11px;">💾 다운로드 가능</span>
-                    </div>
+                    <div style="font-weight:bold;">📋 제목: ${f.title}</div>
+                    <div style="font-size:13px; background:#fff; padding:5px; margin:5px 0; border:1px solid #eee;">설명: ${f.desc}</div>
+                    <div style="font-size:12px; color:#007bff;">📎 첨부파일: ${f.fileName} (${f.size})</div>
                 </div>`;
         });
     }
