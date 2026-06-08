@@ -22,7 +22,7 @@
         }
         h1 { color: #333; margin-bottom: 20px; }
         
-        /* 공지사항 상자 */
+        /* 공지사항 */
         .notice-box {
             background-color: #fff9db;
             border: 2px solid #ffe066;
@@ -31,148 +31,64 @@
             text-align: left;
             margin-bottom: 20px;
         }
-        .notice-textarea {
-            width: 100%; height: 60px; border: 1px solid #ffe066;
-            background-color: #fffdf5; font-family: inherit; font-size: 14px;
-            padding: 10px; border-radius: 5px; box-sizing: border-box; resize: none;
-        }
-        .save-btn {
-            background-color: #f08c00; color: white; border: none;
-            padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;
-        }
 
-        /* 탭 메뉴 버튼 */
+        /* 메뉴 버튼 */
         .tab-menu {
             display: flex;
-            flex-wrap: wrap;
             justify-content: space-around;
             background: #e9ecef;
             padding: 8px;
             border-radius: 10px;
             margin-bottom: 20px;
-            gap: 5px;
         }
         .tab-btn {
-            background: none; border: none; font-size: 14px; font-weight: bold;
-            color: #495057; padding: 10px; border-radius: 5px; cursor: pointer; flex: 1; min-width: 80px;
+            background: none; border: none; font-size: 15px; font-weight: bold;
+            color: #495057; padding: 10px; border-radius: 5px; cursor: pointer; width: 45%;
         }
         .tab-btn.active { background-color: #007bff; color: white; }
-        .tab-btn.admin { background-color: #343a40; color: #ffc107; }
 
-        /* 게시판 본문 내용 상자 */
-        .content-box {
-            display: none; border: 1px solid #dee2e6; border-radius: 10px;
-            padding: 20px; min-height: 300px; background: #fff; text-align: left;
-        }
+        .content-box { display: none; min-height: 450px; }
         .content-box.active { display: block; }
 
-        /* 입력창 스타일 */
-        .input-group { margin-bottom: 12px; }
-        .input-group input, .input-group textarea {
-            width: 100%; padding: 10px; border: 1px solid #ccc; 
-            border-radius: 5px; box-sizing: border-box; font-family: inherit;
+        /* 긴급 카톡 버튼 */
+        .kakao-btn {
+            display: block; background-color: #fee500; color: #191919;
+            font-size: 18px; font-weight: bold; text-decoration: none;
+            padding: 15px; margin: 15px 0; border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .submit-btn {
-            background-color: #28a745; color: white; border: none;
-            padding: 12px 15px; border-radius: 5px; width: 100%; font-weight: bold; font-size: 16px; cursor: pointer;
-        }
-
-        /* 목록 스타일 */
-        .post-list { margin-top: 20px; }
-        .post-item {
-            background: #f8f9fa; border: 1px solid #e9ecef;
-            padding: 15px; margin-bottom: 15px; border-radius: 8px;
-        }
-        .post-meta { font-size: 12px; color: #666; font-weight: bold; margin-bottom: 8px; }
-
-        /* 회원 관리 테이블 스타일 */
-        .member-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
-        .member-table th, .member-table td { border: 1px solid #dee2e6; padding: 8px; text-align: center; }
-        .member-table th { background-color: #f1f3f5; }
-        .action-btn { padding: 3px 7px; border: none; border-radius: 3px; font-size: 12px; cursor: pointer; margin: 2px; color: white; }
-        .btn-ban { background-color: #dc3545; }
-        .btn-unban { background-color: #28a745; }
-        .btn-kick { background-color: #6c757d; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>☕ 담벼락 카페</h1>
+    <h1>☕ 담벼락 카페 1호점</h1>
 
     <div class="notice-box">
-        <h3 style="margin:0 0 10px 0; color:#f08c00;">📢 이용 안내 공지사항 
-            <button class="save-btn" onclick="saveNotice()">💾 저장</button>
-        </h3>
-        <textarea id="noticeInput" class="notice-textarea" placeholder="공지사항을 적어주세요."></textarea>
+        <h3 style="margin:0 0 5px 0; color:#f08c00;">📢 오픈 기념 공지사항</h3>
+        <p style="margin:0; font-size:14px; color:#333;">정식 실시간 소통 게시판을 오픈했습니다! 아래에서 자유롭게 글을 남겨주세요.</p>
     </div>
 
+    <!-- 메뉴 선택 -->
     <div class="tab-menu">
-        <button class="tab-btn active" onclick="switchTab('home')">🏡 1. 홈 대문</button>
-        <button class="tab-btn" onclick="switchTab('board')">💬 2. 자유게시판</button>
-        <button class="tab-btn" onclick="switchTab('join')">🔐 3. 가입/탈퇴</button>
-        <button class="tab-btn" onclick="switchTab('archive')">📂 4. 자료실</button>
-        <button class="tab-btn admin" onclick="switchTab('admin')">👑 [운영자]</button>
+        <button class="tab-btn active" onclick="switchTab('board')">💬 1. 실시간 자유게시판</button>
+        <button class="tab-btn" onclick="switchTab('chat')">🔥 2. 실시간 단톡방</button>
     </div>
 
-    <div id="home" class="content-box active">
-        <h3 style="text-align: center; color: #007bff; margin-top: 50px;">👋 담벼락 카페에 오신 것을 환영합니다!</h3>
-        <p style="text-align: center; color: #555;">메뉴를 통해 자유게시판, 자료실을 이용해 소통해 보세요.</p>
-    </div>
-
-    <div id="board" class="content-box">
-        <h3>💬 자유게시판</h3>
-        <div class="input-group"><input type="text" id="regName" placeholder="가입한 닉네임 입력"></div>
-        <div class="input-group"><textarea id="regContent" placeholder="정지된 회원은 글을 쓸 수 없습니다!"></textarea></div>
-        <button class="submit-btn" onclick="addPost()">✍️ 글 등록하기</button>
-        <div id="postList" class="post-list"></div>
-    </div>
-
-    <div id="join" class="content-box">
-        <h3>🔐 회원 관리 (가입 / 탈퇴)</h3>
-        <div style="background: #e8f4fd; padding: 12px; border-radius: 5px; margin-bottom: 15px; font-size: 14px; color: #0056b3;">
-            💡 닉네임을 적고 키보드의 <b>[Enter 엔터]</b> 키를 누르면 바로 가입됩니다!
-        </div>
-        <div class="input-group">
-            <input type="text" id="joinName" placeholder="활동할 닉네임 입력 후 엔터 치세요" onkeyup="if(event.key === 'Enter') registerMember()">
-        </div>
-        <button class="submit-btn" onclick="registerMember()">📝 회원 가입 신청하기</button>
+    <!-- 1. 구글 실시간 게시판 탑재 공간 -->
+    <div id="board" class="content-box active">
+        <h3 style="text-align: left; color:#333;">✍️ 자유게시판 글 남기기</h3>
+        <p style="text-align: left; font-size:13px; color:#666;">아래 창에 닉네임과 글을 쓰고 [제출]을 누르면 대장님에게 실시간으로 전달됩니다!</p>
         
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 25px 0;">
-        
-        <h4 style="color: #dc3545;">🚨 회원 탈퇴 기능</h4>
-        <p style="font-size: 13px; color: #666;">탈퇴할 닉네임을 적고 <b>[Enter 엔터]</b> 키를 치면 탈퇴 처리됩니다.</p>
-        <div class="input-group">
-            <input type="text" id="leaveName" placeholder="탈퇴할 닉네임 입력 후 엔터 치세요" onkeyup="if(event.key === 'Enter') leaveMember()">
-        </div>
-        <button class="submit-btn" style="background-color: #dc3545;" onclick="leaveMember()">👋 카페 탈퇴하기</button>
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeUDwUOEwFSj3gA7EWoVd0j6iroa9beZ7nX9-i9SjmCiTIlYg/viewform?usp=header" width="100%" height="550" frameborder="0" marginheight="0" marginwidth="0">지정된 게시판 로딩 중...</iframe>
     </div>
 
-    <div id="archive" class="content-box">
-        <h3>📂 파일 자료실</h3>
-        <div class="input-group"><input type="text" id="fileTitle" placeholder="자료 제목 입력"></div>
-        <div class="input-group"><textarea id="fileDesc" placeholder="자료에 대한 상세 설명"></textarea></div>
-        <div class="input-group"><input type="file" id="fileInput"></div>
-        <button class="submit-btn" style="background-color: #17a2b8;" onclick="uploadFile()">📤 자료 등록하기</button>
-        <div id="fileList" class="post-list"></div>
-    </div>
-
-    <div id="admin" class="content-box" style="background-color: #f8f9fa;">
-        <h3 style="color: #343a40; border-bottom: 2px solid #343a40; padding-bottom: 5px;">👑 대장님 전용 회원 관리실</h3>
-        <p style="font-weight: bold; font-size: 16px; color: #007bff;">📊 총 가입 회원 수: <span id="totalCount">0</span>명</p>
+    <!-- 2. 카카오톡 채팅방 이동 공간 -->
+    <div id="chat" class="content-box">
+        <h3 style="text-align: left; color:#333;">💬 담벼락 카카오톡 오픈채팅방</h3>
+        <p style="text-align: left; font-size:13px; color:#666;">웹사이트 글쓰기보다 더 빠른 실시간 수다를 원하시면 아래 버튼을 눌러 들어오세요!</p>
         
-        <h4>👥 회원 명단 및 제어 상태</h4>
-        <table class="member-table">
-            <thead>
-                <tr>
-                    <th>닉네임</th>
-                    <th>상태</th>
-                    <th>명령 제어</th>
-                </tr>
-            </thead>
-            <tbody id="memberAdminList">
-            </tbody>
-        </table>
+        <a href="https://open.kakao.com/" target="_blank" class="kakao-btn">💛 대장님과 실시간 카톡방 입장하기</a>
     </div>
 </div>
 
@@ -183,155 +99,8 @@
         document.getElementById(tabId).classList.add('active');
         
         const btns = document.querySelectorAll('.tab-btn');
-        if(tabId === 'home') btns[0].classList.add('active');
-        if(tabId === 'board') btns[1].classList.add('active');
-        if(tabId === 'join') btns[2].classList.add('active');
-        if(tabId === 'archive') btns[3].classList.add('active');
-        if(tabId === 'admin') btns[4].classList.add('active');
-    }
-
-    window.onload = function() {
-        const savedNotice = localStorage.getItem('cafeNotice');
-        document.getElementById('noticeInput').value = savedNotice ? savedNotice : "우리 카페에 오신 것을 환영합니다! 매너 가입 필수!";
-        
-        let members = JSON.parse(localStorage.getItem('cafeMembers')) || [];
-        if(members.length === 0) {
-            members = [
-                { name: "홍길동", status: "정상" },
-                { name: "불량유저", status: "정상" }
-            ];
-            localStorage.setItem('cafeMembers', JSON.stringify(members));
-        }
-
-        loadPosts();
-        loadFiles();
-        loadAdminMembers();
-    }
-
-    function saveNotice() {
-        localStorage.setItem('cafeNotice', document.getElementById('noticeInput').value);
-        alert('📢 공지사항이 저장되었습니다!');
-    }
-
-    function registerMember() {
-        const name = document.getElementById('joinName').value.trim();
-        if(!name) { alert('닉네임을 입력해 주세요!'); return; }
-        let members = JSON.parse(localStorage.getItem('cafeMembers')) || [];
-        if(members.some(m => m.name === name)) { alert('이미 카페에 존재하는 닉네임입니다!'); return; }
-        members.push({ name: name, status: "정상" });
-        localStorage.setItem('cafeMembers', JSON.stringify(members));
-        document.getElementById('joinName').value = '';
-        alert(`🎉 [${name}]님, 회원가입이 완료되었습니다!`);
-        loadAdminMembers();
-    }
-
-    function leaveMember() {
-        const name = document.getElementById('leaveName').value.trim();
-        if(!name) { alert('탈퇴할 닉네임을 입력해 주세요!'); return; }
-        let members = JSON.parse(localStorage.getItem('cafeMembers')) || [];
-        const index = members.findIndex(m => m.name === name);
-        if(index === -1) { alert('가입 정보가 없는 닉네임입니다.'); return; }
-        if(confirm(`정말 [${name}] 닉네임을 카페에서 탈퇴 처리하시겠습니까?`)) {
-            members.splice(index, 1);
-            localStorage.setItem('cafeMembers', JSON.stringify(members));
-            document.getElementById('leaveName').value = '';
-            alert('👋 카페 탈퇴 처리가 완료되었습니다.');
-            loadAdminMembers();
-        }
-    }
-
-    function loadAdminMembers() {
-        const members = JSON.parse(localStorage.getItem('cafeMembers')) || [];
-        document.getElementById('totalCount').innerText = members.length;
-        const tbody = document.getElementById('memberAdminList');
-        tbody.innerHTML = members.length === 0 ? '<tr><td colspan="3" style="color:#aaa;">가입한 회원이 없습니다.</td></tr>' : '';
-        members.forEach((m, idx) => {
-            let statusColor = m.status === '정상' ? 'green' : 'red';
-            let toggleBanBtn = m.status === '정상' 
-                ? `<button class="action-btn btn-ban" onclick="changeStatus(${idx}, '정지')">🚫 정지</button>`
-                : `<button class="action-btn btn-unban" onclick="changeStatus(${idx}, '정상')">✅ 해제</button>`;
-            tbody.innerHTML += `
-                <tr>
-                    <td><b>${m.name}</b></td>
-                    <td style="color:${statusColor}; font-weight:bold;">${m.status}</td>
-                    <td>${toggleBanBtn}<button class="action-btn btn-kick" onclick="kickMember(${idx})">❌ 강퇴</button></td>
-                </tr>`;
-        });
-    }
-
-    function changeStatus(idx, newStatus) {
-        let members = JSON.parse(localStorage.getItem('cafeMembers')) || [];
-        members[idx].status = newStatus;
-        localStorage.setItem('cafeMembers', JSON.stringify(members));
-        loadAdminMembers();
-        alert(`멤버의 상태를 [${newStatus}] 상태로 변경했습니다.`);
-    }
-
-    function kickMember(idx) {
-        let members = JSON.parse(localStorage.getItem('cafeMembers')) || [];
-        if(confirm(`[${members[idx].name}] 회원을 강제로 추방(강퇴)하시겠습니까?`)) {
-            alert(`[${members[idx].name}] 회원이 강퇴되었습니다.`);
-            members.splice(idx, 1);
-            localStorage.setItem('cafeMembers', JSON.stringify(members));
-            loadAdminMembers();
-        }
-    }
-
-    function checkMemberStatus(name) {
-        const members = JSON.parse(localStorage.getItem('cafeMembers')) || [];
-        const user = members.find(m => m.name === name);
-        if(!user) { alert('⚠️ 카페에 가입되지 않은 닉네임입니다. 가입을 먼저 진행해 주세요!'); return '미가입'; }
-        if(user.status === '정지') { alert('🚫 대장님에 의해 [활동 정지] 처리가 된 닉네임입니다. 글을 쓸 수 없습니다.'); return '정지'; }
-        return '정상';
-    }
-
-    function addPost() {
-        const name = document.getElementById('regName').value.trim();
-        const content = document.getElementById('regContent').value.trim();
-        if(!name || !content) { alert('닉네임과 내용을 모두 입력해 주세요!'); return; }
-        if(checkMemberStatus(name) !== '정상') return;
-        let posts = JSON.parse(localStorage.getItem('cafePosts')) || [];
-        posts.unshift({ name: name, content: content, date: new Date().toLocaleString() });
-        localStorage.setItem('cafePosts', JSON.stringify(posts));
-        document.getElementById('regContent').value = '';
-        loadPosts();
-    }
-
-    function loadPosts() {
-        const posts = JSON.parse(localStorage.getItem('cafePosts')) || [];
-        const listDiv = document.getElementById('postList');
-        listDiv.innerHTML = posts.length === 0 ? '<p style="color:#aaa;">첫 글을 남겨보세요!</p>' : '';
-        posts.forEach(p => {
-            listDiv.innerHTML += `<div class="post-item"><div class="post-meta">👤 ${p.name} (${p.date})</div><div>${p.content}</div></div>`;
-        });
-    }
-
-    function uploadFile() {
-        const title = document.getElementById('fileTitle').value.trim();
-        const desc = document.getElementById('fileDesc').value.trim();
-        const fileInput = document.getElementById('fileInput');
-        if(!title || !desc || !fileInput.files.length) { alert('모든 칸을 채우고 파일을 선택해 주세요!'); return; }
-        const file = fileInput.files[0];
-        let files = JSON.parse(localStorage.getItem('cafeFiles')) || [];
-        files.unshift({ title: title, desc: desc, fileName: file.name, size: (file.size/1024).toFixed(1) + ' KB', date: new Date().toLocaleDateString() });
-        localStorage.setItem('cafeFiles', JSON.stringify(files));
-        document.getElementById('fileTitle').value = ''; document.getElementById('fileDesc').value = ''; fileInput.value = '';
-        alert('📤 자료실 등록 완료!');
-        loadFiles();
-    }
-
-    function loadFiles() {
-        const files = JSON.parse(localStorage.getItem('cafeFiles')) || [];
-        const listDiv = document.getElementById('fileList');
-        listDiv.innerHTML = files.length === 0 ? '<p style="color:#aaa;">공유된 자료가 없습니다.</p>' : '';
-        files.forEach(f => {
-            listDiv.innerHTML += `
-                <div class="post-item" style="border-left: 4px solid #17a2b8;">
-                    <div style="font-weight:bold;">📋 제목: ${f.title}</div>
-                    <div style="font-size:13px; background:#fff; padding:5px; margin:5px 0; border:1px solid #eee;">설명: ${f.desc}</div>
-                    <div style="font-size:12px; color:#007bff;">📎 첨부파일: ${f.fileName} (${f.size})</div>
-                </div>`;
-        });
+        if(tabId === 'board') btns[0].classList.add('active');
+        if(tabId === 'chat') btns[1].classList.add('active');
     }
 </script>
 
