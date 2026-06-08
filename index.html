@@ -100,7 +100,6 @@
 <div class="container">
     <h1>☕ 담벼락 카페</h1>
 
-    <!-- 공지사항 상자 -->
     <div class="notice-box">
         <h3 style="margin:0 0 10px 0; color:#f08c00;">📢 이용 안내 공지사항 
             <button class="save-btn" onclick="saveNotice()">💾 저장</button>
@@ -108,7 +107,6 @@
         <textarea id="noticeInput" class="notice-textarea" placeholder="공지사항을 적어주세요."></textarea>
     </div>
 
-    <!-- 🛠️ 메뉴 버튼 순서 교체완료! 홈 기준으로 3번에 가입/탈퇴가 오도록 수정 -->
     <div class="tab-menu">
         <button class="tab-btn active" onclick="switchTab('home')">🏡 1. 홈 대문</button>
         <button class="tab-btn" onclick="switchTab('board')">💬 2. 자유게시판</button>
@@ -117,13 +115,11 @@
         <button class="tab-btn admin" onclick="switchTab('admin')">👑 [운영자]</button>
     </div>
 
-    <!-- 1. 홈 대문 방 -->
     <div id="home" class="content-box active">
         <h3 style="text-align: center; color: #007bff; margin-top: 50px;">👋 담벼락 카페에 오신 것을 환영합니다!</h3>
         <p style="text-align: center; color: #555;">메뉴를 통해 자유게시판, 자료실을 이용해 소통해 보세요.</p>
     </div>
 
-    <!-- 2. 자유게시판 방 -->
     <div id="board" class="content-box">
         <h3>💬 자유게시판</h3>
         <div class="input-group"><input type="text" id="regName" placeholder="가입한 닉네임 입력"></div>
@@ -132,24 +128,26 @@
         <div id="postList" class="post-list"></div>
     </div>
 
-    <!-- 3. 회원가입 및 탈퇴 방 (여기가 3번 방으로 연동 위치 조정되었습니다) -->
     <div id="join" class="content-box">
         <h3>🔐 회원 관리 (가입 / 탈퇴)</h3>
         <div style="background: #e8f4fd; padding: 12px; border-radius: 5px; margin-bottom: 15px; font-size: 14px; color: #0056b3;">
-            💡 테스트를 위해 지인들에게 여기서 닉네임을 등록하고 가입하라고 안내해 보세요!
+            💡 닉네임을 적고 키보드의 <b>[Enter 엔터]</b> 키를 누르면 바로 가입됩니다!
         </div>
-        <div class="input-group"><input type="text" id="joinName" placeholder="활동할 닉네임 입력"></div>
+        <div class="input-group">
+            <input type="text" id="joinName" placeholder="활동할 닉네임 입력 후 엔터 치세요" onkeyup="if(event.key === 'Enter') registerMember()">
+        </div>
         <button class="submit-btn" onclick="registerMember()">📝 회원 가입 신청하기</button>
         
         <hr style="border: 0; border-top: 1px solid #eee; margin: 25px 0;">
         
         <h4 style="color: #dc3545;">🚨 회원 탈퇴 기능</h4>
-        <p style="font-size: 13px; color: #666;">카페를 탈퇴하시려면 가입하셨던 닉네임을 입력 후 탈퇴 버튼을 누르세요.</p>
-        <div class="input-group"><input type="text" id="leaveName" placeholder="탈퇴할 닉네임 입력"></div>
+        <p style="font-size: 13px; color: #666;">탈퇴할 닉네임을 적고 <b>[Enter 엔터]</b> 키를 치면 탈퇴 처리됩니다.</p>
+        <div class="input-group">
+            <input type="text" id="leaveName" placeholder="탈퇴할 닉네임 입력 후 엔터 치세요" onkeyup="if(event.key === 'Enter') leaveMember()">
+        </div>
         <button class="submit-btn" style="background-color: #dc3545;" onclick="leaveMember()">👋 카페 탈퇴하기</button>
     </div>
 
-    <!-- 4. 자료실 방 -->
     <div id="archive" class="content-box">
         <h3>📂 파일 자료실</h3>
         <div class="input-group"><input type="text" id="fileTitle" placeholder="자료 제목 입력"></div>
@@ -159,7 +157,6 @@
         <div id="fileList" class="post-list"></div>
     </div>
 
-    <!-- 5. 👑 운영자 전용 관리자 방 -->
     <div id="admin" class="content-box" style="background-color: #f8f9fa;">
         <h3 style="color: #343a40; border-bottom: 2px solid #343a40; padding-bottom: 5px;">👑 대장님 전용 회원 관리실</h3>
         <p style="font-weight: bold; font-size: 16px; color: #007bff;">📊 총 가입 회원 수: <span id="totalCount">0</span>명</p>
@@ -180,7 +177,6 @@
 </div>
 
 <script>
-    // 메뉴 전환 기능 (바뀐 버튼 순서에 맞게 자바스크립트 매핑 수정)
     function switchTab(tabId) {
         document.querySelectorAll('.content-box').forEach(box => box.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
