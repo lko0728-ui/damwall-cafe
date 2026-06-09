@@ -29,10 +29,26 @@
             padding: 15px;
             border-radius: 10px;
             text-align: left;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
-        .content-box { min-height: 500px; }
+        /* 메뉴 버튼 */
+        .tab-menu {
+            display: flex;
+            justify-content: space-around;
+            background: #e9ecef;
+            padding: 8px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .tab-btn {
+            background: none; border: none; font-size: 15px; font-weight: bold;
+            color: #495057; padding: 10px; border-radius: 5px; cursor: pointer; width: 45%;
+        }
+        .tab-btn.active { background-color: #28a745; color: white; } /* 자료실 느낌의 초록색 */
+
+        .content-box { display: none; min-height: 500px; }
+        .content-box.active { display: block; }
     </style>
 </head>
 <body>
@@ -42,16 +58,39 @@
 
     <div class="notice-box">
         <h3 style="margin:0 0 5px 0; color:#f08c00;">📢 오픈 기념 공지사항</h3>
-        <p style="margin:0; font-size:14px; color:#333;">정식 실시간 소통 자유게시판을 오픈했습니다! 아래에서 자유롭게 글을 남겨주세요.</p>
+        <p style="margin:0; font-size:14px; color:#333;">정식 실시간 자유게시판과 자료실을 오픈했습니다! 아래 탭을 눌러 이용해 보세요.</p>
     </div>
 
-    <div class="content-box">
-        <h3 style="text-align: left; color:#333;">💬 실시간 자유게시판</h3>
-        <p style="text-align: left; font-size:13px; color:#666;">아래 창에 이름과 글을 쓰고 [제출]을 누르면 대장님에게 실시간으로 안전하게 전달됩니다!</p>
+    <div class="tab-menu">
+        <button class="tab-btn active" onclick="switchTab('board')">💬 1. 실시간 자유게시판</button>
+        <button class="tab-btn" onclick="switchTab('archive')">📂 2. 카페 자료실</button>
+    </div>
+
+    <div id="board" class="content-box active">
+        <h3 style="text-align: left; color:#333;">✍️ 자유게시판 글 남기기</h3>
+        <p style="text-align: left; font-size:13px; color:#666;">아래 창에 이름과 글을 쓰고 [제출]을 누르면 대장님에게 실시간으로 전달됩니다!</p>
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeUDwUOEwFSj3gA7EWoVd0j6iroa9beZ7nX9-i9SjmCiTIlYg/viewform?embedded=true" width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0">지정된 게시판 로딩 중...</iframe>
+    </div>
+
+    <div id="archive" class="content-box">
+        <h3 style="text-align: left; color:#333;">📂 자료 및 파일 올리기</h3>
+        <p style="text-align: left; font-size:13px; color:#666;">대장님과 카페 회원들에게 공유할 글과 자료(사진/파일)를 업로드하는 공간입니다.</p>
         
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeUDwUOEwFSj3gA7EWoVd0j6iroa9beZ7nX9-i9SjmCiTIlYg/viewform?embedded=true" width="100%" height="650" frameborder="0" marginheight="0" marginwidth="0">지정된 게시판 로딩 중...</iframe>
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeUDwUOEwFSj3gA7EWoVd0j6iroa9beZ7nX9-i9SjmCiTIlYg/viewform?embedded=true" width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0">자료실 로딩 중...</iframe>
     </div>
 </div>
+
+<script>
+    function switchTab(tabId) {
+        document.querySelectorAll('.content-box').forEach(box => box.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        
+        const btns = document.querySelectorAll('.tab-btn');
+        if(tabId === 'board') btns[0].classList.add('active');
+        if(tabId === 'archive') btns[1].classList.add('active');
+    }
+</script>
 
 </body>
 </html>
