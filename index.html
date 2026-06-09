@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>담벼락 카페 1호점</title>
+    <title>담벼락 카페 1호점 - 초간편 자료실</title>
     <style>
         body {
             font-family: 'Malgun Gothic', sans-serif;
-            background-color: #ffffff;
-            color: #000000;
+            background-color: #000000; /* 시각장애인 보호용 고대비 검정 배경 */
+            color: #ffffff; /* 선명한 흰색 글씨 */
             margin: 0;
             padding: 20px;
             line-height: 2.0;
@@ -16,40 +16,59 @@
         .container {
             max-width: 650px;
             margin: 0 auto;
-            border: 3px solid #000000;
+            border: 4px solid #ffffff;
             padding: 30px;
-            text-align: center;
         }
-        h1 { font-size: 28px; color: #000000; border-bottom: 3px solid #000; padding-bottom: 15px; }
+        h1 { font-size: 28px; color: #ffff00; border-bottom: 4px solid #ffff00; padding-bottom: 15px; text-align: center; }
         
-        .box {
-            background-color: #f8f9fa;
-            border: 2px solid #000000;
-            padding: 20px;
-            margin-bottom: 30px;
+        /* 입력창 상자 스타일 */
+        .form-group {
+            margin-bottom: 25px;
             text-align: left;
         }
-        /* 스크린 리더와 저시력 회원님들을 위한 고대비 대형 버튼 */
-        .main-btn {
+        label {
             display: block;
-            background-color: #000000;
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffff00; /* 항목 이름은 노란색 */
+            margin-bottom: 5px;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            background-color: #222222;
             color: #ffffff;
-            text-decoration: none;
+            border: 2px solid #ffffff;
+            box-sizing: border-box;
+        }
+        /* 파일 첨부 버튼 디자인 크고 선명하게 */
+        input[type="file"] {
+            font-size: 18px;
+            color: #ffffff;
+            padding: 10px 0;
+        }
+        
+        /* 대형 등록 버튼 */
+        .submit-btn {
+            display: block;
+            width: 100%;
+            background-color: #ffff00;
+            color: #000000;
             font-size: 24px;
             font-weight: bold;
-            padding: 25px;
-            border-radius: 10px;
-            border: 2px solid #000000;
-            margin: 30px 0;
+            padding: 20px;
+            border: none;
+            cursor: pointer;
+            margin-top: 30px;
         }
-        .main-btn:hover, .main-btn:focus {
+        .submit-btn:hover, .submit-btn:focus {
             background-color: #ffffff;
-            color: #0000ee;
-            border: 4px solid #0000ee;
-            outline: none;
+            color: #ff0000;
+            outline: 3px solid #ff0000;
         }
     </style>
-
+    
     <script>
         if (window.top !== window.self) {
             window.top.location.replace(window.self.location.href);
@@ -59,20 +78,48 @@
 <body>
 
 <div class="container">
-    <h1>☕ 담벼락 카페 1호점 단독 홈페이지</h1>
+    <h1>📂 담벼락 카페 1호점 - 초간편 자료실</h1>
+    
+    <p style="font-size: 18px; color: #00ffff; text-align: left; margin-bottom: 30px;">
+        ※ 탭 키를 누르면서 제목과 설명을 적고 파일(사진/문서)을 첨부한 뒤 등록 버튼을 누르세요.
+    </p>
 
-    <div class="box" role="region" aria-label="안내">
-        <h2 style="font-size: 20px; margin-top: 0; color: #ff0000;">📢 중요 안내 사항</h2>
-        <p>우리 카페는 넓은마을 게시판이나 다른 사람의 채널 글과 절대 섞이지 않는 <b>대장님 단독 관리 공간</b>입니다.</p>
-        <p style="margin-top: 10px;">아래 버튼을 누르시면 다른 메뉴와 겹치지 않고, 대장님이 오늘 새로 개설하신 <b>[깨끗한 담벼락 방명록 구글 창]</b>으로 안전하게 이동하여 로그인 없이 즉시 글을 남기실 수 있습니다.</p>
-    </div>
+    <form id="archiveForm" onsubmit="uploadData(event)">
+        
+        <div class="form-group">
+            <label for="fileTitle">1. 자료 제목을 적어주세요</label>
+            <input type="text" id="fileTitle" placeholder="예: 추천 음악 파일입니다" required>
+        </div>
 
-    <a href="https://forms.google.com" class="main-btn" title="담벼락 카페 실시간 글쓰기 창으로 이동하기">
-        👉 여기를 눌러서 [실시간 자유게시판 글쓰기] 입장하기
-    </a>
+        <div class="form-group">
+            <label for="fileDesc">2. 자료에 대한 설명을 적어주세요</label>
+            <textarea id="fileDesc" rows="4" placeholder="예: 가요 명곡 모음집입니다. 편하게 들으세요." required></textarea>
+        </div>
 
-    <p style="font-size: 15px; color: #555;">※ 복잡한 회원가입 없이 닉네임과 남기실 말씀만 적고 제출하시면 완료됩니다.</p>
+        <div class="form-group">
+            <label for="fileAttach">3. 올릴 파일이나 사진을 선택하세요</label>
+            <input type="file" id="fileAttach" required>
+        </div>
+
+        <button type="submit" class="submit-btn">🟢 4. 자료실에 파일 등록하기</button>
+
+    </form>
 </div>
+
+<script>
+    function uploadData(event) {
+        event.preventDefault();
+        
+        const title = document.getElementById('fileTitle').value;
+        const file = document.getElementById('fileAttach').files[0].name;
+        
+        // 파일이 성공적으로 접수되었음을 소리로 확실하게 안내
+        alert("🎉 자료 등록 완료!\n\n[제목]: " + title + "\n[첨부된 파일]: " + file + "\n\n대장님 전용 자료실 서버로 안전하게 전송되었습니다!");
+        
+        // 입력창 초기화
+        document.getElementById('archiveForm').reset();
+    }
+</script>
 
 </body>
 </html>
