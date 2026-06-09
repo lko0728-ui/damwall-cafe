@@ -45,10 +45,30 @@
             background: none; border: none; font-size: 15px; font-weight: bold;
             color: #495057; padding: 10px; border-radius: 5px; cursor: pointer; width: 45%;
         }
-        .tab-btn.active { background-color: #28a745; color: white; } /* 자료실 느낌의 초록색 */
+        .tab-btn.active { background-color: #28a745; color: white; }
 
         .content-box { display: none; min-height: 500px; }
         .content-box.active { display: block; }
+
+        /* 파일 업로드 안내 박스 */
+        .file-upload-box {
+            background-color: #e8f4fd;
+            border: 1px solid #b1d7fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: left;
+            margin-bottom: 15px;
+        }
+        .upload-link {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -58,7 +78,7 @@
 
     <div class="notice-box">
         <h3 style="margin:0 0 5px 0; color:#f08c00;">📢 오픈 기념 공지사항</h3>
-        <p style="margin:0; font-size:14px; color:#333;">정식 실시간 자유게시판과 자료실을 오픈했습니다! 아래 탭을 눌러 이용해 보세요.</p>
+        <p style="margin:0; font-size:14px; color:#333;">로그인 없이 이용 가능한 실시간 자유게시판과 자료실을 오픈했습니다!</p>
     </div>
 
     <div class="tab-menu">
@@ -68,15 +88,21 @@
 
     <div id="board" class="content-box active">
         <h3 style="text-align: left; color:#333;">✍️ 자유게시판 글 남기기</h3>
-        <p style="text-align: left; font-size:13px; color:#666;">아래 창에 이름과 글을 쓰고 [제출]을 누르면 대장님에게 실시간으로 전달됩니다!</p>
+        <p style="text-align: left; font-size:13px; color:#666;">아래 창에 이름과 글을 쓰고 [제출]을 누르면 실시간으로 전달됩니다!</p>
         <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeUDwUOEwFSj3gA7EWoVd0j6iroa9beZ7nX9-i9SjmCiTIlYg/viewform?embedded=true" width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0">지정된 게시판 로딩 중...</iframe>
     </div>
 
     <div id="archive" class="content-box">
-        <h3 style="text-align: left; color:#333;">📂 자료 및 파일 올리기</h3>
-        <p style="text-align: left; font-size:13px; color:#666;">대장님과 카페 회원들에게 공유할 글과 자료(사진/파일)를 업로드하는 공간입니다.</p>
+        <h3 style="text-align: left; color:#333;">📂 자료실 글 쓰기 및 파일 공유</h3>
         
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeUDwUOEwFSj3gA7EWoVd0j6iroa9beZ7nX9-i9SjmCiTIlYg/viewform?embedded=true" width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0">자료실 로딩 중...</iframe>
+        <div class="file-upload-box">
+            <p style="margin:0 0 5px 0; font-size:14px; color:#004085; font-weight:bold;">📎 사진이나 파일을 공유하는 방법 (로그인 없음)</p>
+            <p style="margin:0; font-size:13px; color:#333;">1. 아래 버튼을 눌러 파일이나 사진을 먼저 올린 뒤, <b>주소(링크)를 복사</b>하세요.</p>
+            <p style="margin:5px 0; font-size:13px; color:#333;">2. 복사한 주소를 아래 글쓰기 창 [남기실 말씀] 칸에 붙여넣어 제출하면 끝!</p>
+            <a href="https://imgur.com/upload" target="_blank" class="upload-link">📸 사진/파일 무료 올리기 링크</a>
+        </div>
+        
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeUDwUOEwFSj3gA7EWoVd0j6iroa9beZ7nX9-i9SjmCiTIlYg/viewform?embedded=true" width="100%" height="500" frameborder="0" marginheight="0" marginwidth="0">자료실 로딩 중...</iframe>
     </div>
 </div>
 
